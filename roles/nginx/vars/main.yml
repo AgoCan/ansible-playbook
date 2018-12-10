@@ -1,0 +1,5 @@
+packages:
+  - pcre
+  - pcre-devel
+  - openssl
+  - openssl-devel

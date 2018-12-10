@@ -1,0 +1,7 @@
+*.tar.gz
+*.zip
+*.rpm
+*.tgz
+*.bz2
+*.deb
+roles/*/files

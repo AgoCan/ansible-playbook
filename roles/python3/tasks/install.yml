@@ -1,0 +1,32 @@
+- name: "install rely"
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - openssl
+      - openssl-devel
+      - bzip2-devel
+      - expat-devel
+      - gdbm-devel
+      - readline-devel
+      - sqlite-devel
+
+- name: "send nginx package to dest"
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: "{{ dest_source_dir }}"
+
+- name: "configure"
+  shell: "./configure --prefix={{ app_dir }}/{{ app_name }} --with-ssl --with-universal-archs=all"
+  args:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+- name:
+  make:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+    target: install
+- name:
+  file:
+    src: "{{ app_dir }}/{{ app_name }}"
+    dest: "{{ app_dir }}/python"
+    state: link
+

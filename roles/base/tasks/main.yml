@@ -1,0 +1,40 @@
+- name: "epel_repo"
+  yum:
+    name: epel-release
+    state: installed
+- name: "epel"
+  copy:
+    src: epel-tencentyun.repo
+    dest: /etc/yum.repos.d/epel.repo
+- name: "centos-base.repo"
+  copy:
+    src: CentOS-Base-tencent.repo
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+- name: "base rpm"
+  yum:
+    name: "{{ base_packages  }}"
+  vars:
+    base_packages:
+      - gcc
+      - gcc-c++
+      - make
+      - wget
+      - vim
+      - unzip
+      - openssl
+      - openssl-devel
+      - net-tools
+      - bash-completion
+      - cmake
+      - redis
+- name: "base dir"
+  shell: "mkdir -p /data/src/ /log/ /ev-app/"
+#  file:
+#    path: "{{ dirs }}"
+#    state: directory
+#    mode: 0777
+#  vars:
+#    dirs:
+#      - /data/src/
+#      - /log/
+#      - /ev-app

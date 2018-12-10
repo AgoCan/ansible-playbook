@@ -1,0 +1,38 @@
+- name: "install rely"
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - pcre
+      - pcre-devel
+      - openssl
+      - openssl-devel
+- name: "create group www"
+  group:
+    name: "{{ group }}"
+    gid: 777
+- name: "create www"
+  user:
+    name: "{{ user }}"
+    comment: web user
+    uid: 777
+    group: "{{ group }}"
+    shell: /sbin/nologin
+- name: "send nginx package to dest"
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: "{{ dest_source_dir }}"
+- name: "install nginx"
+  shell: "./configure --user={{ user }} --group={{ group }} --prefix={{ install_dir }} --with-http_stub_status_module  --with-http_ssl_module "
+  args:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+- name:
+  make:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+    target: install
+- name:
+  file:
+    src: "{{ install_dir }}"
+    dest: "{{ app_dir }}/nginx"
+    state: link
+

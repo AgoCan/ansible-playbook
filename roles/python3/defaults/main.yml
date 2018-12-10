@@ -1,0 +1,5 @@
+app_dir: /ev-app/
+app_name: python-3.7.1
+dest_source_dir: /data/src/ 
+tarball_name: Python-3.7.1.tgz
+dest_tar_name: Python-3.7.1

@@ -1,0 +1,66 @@
+- name: install rely
+  yum: 
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - zlib-devel
+      - libxml2-devel
+      - libjpeg-devel
+      - libjpeg-turbo-devel
+      - curl-devel
+      - openssl-devel
+      - freetype-devel
+      - libpng-devel
+      - gd-devel
+      - libcurl-devel
+      - libxslt-devel
+      - libxslt-devel
+      - libicu-devel
+- name: "create group www"
+  group:
+    name: "{{ group }}"
+    gid: 777
+- name: "create www"
+  user:
+    name: "{{ user }}"
+    comment: web user
+    uid: 777
+    group: "{{ group }}"
+    shell: /sbin/nologin
+- name: "send php package to dest"
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: "{{ dest_source_dir }}"
+- name: install php
+  shell: "./configure --prefix={{ install_dir }} --exec-prefix={{ install_dir }} --bindir={{ install_dir }}/bin --sbindir={{ install_dir }}/sbin --includedir={{ install_dir }}/include --libdir={{ install_dir }}/lib/php --mandir={{ install_dir }}/php/man --with-config-file-path={{ install_dir }}/etc --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-mhash --with-openssl --with-gd --with-iconv --with-zlib --enable-inline-optimization --enable-shared --enable-xml --enable-bcmath --enable-shmop --enable-sysvsem --enable-mbregex --enable-mbstring --enable-ftp --enable-fpm --with-fpm-user=www --with-fpm-group=www --enable-mysqlnd --enable-mysqlnd-compression-support --with-freetype-dir --with-jpeg-dir --with-png-dir --with-libxml-dir --with-curl --enable-intl --with-libmbfl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --with-gettext --disable-fileinfo --enable-opcache --with-pear --enable-maintainer-zts --without-gdbm"
+  args:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+- name:
+  make:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+    target: install
+- name:
+  file:
+    src: "{{ install_dir }}"
+    dest: "{{ base_dir }}/php"
+    state: link
+- name: "php.ini"
+  copy:
+    src: php.ini
+    dest: "{{ base_dir }}/php/etc/php.ini"
+
+- name: "php-fpm"
+  copy:
+    src: php-fpm.conf
+    dest: "{{ base_dir }}/php/etc/php-fpm.conf"
+
+- name: "www.conf"
+  copy:
+    src: www.conf
+    dest: "{{ base_dir }}/php/etc/php-fpm.d/www.conf"
+
+- name: "add PATH"
+  lineinfile:
+    path: /root/.bashrc
+    state: present
+    line: "export PATH=$PATH:{{ app_dir }}/{{ app_name }}/sbin/:{{ app_dir }}/{{ app_name }}/bin/"

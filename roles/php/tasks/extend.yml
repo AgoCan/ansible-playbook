@@ -1,0 +1,33 @@
+- name: "instam m4 autoconf"
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - m4
+      - autoconf
+- name: "send redis package to dest"
+  unarchive:
+    src: "{{ extend01_tar_name }}"
+    dest: "{{ dest_source_dir }}"
+- name: "add extend redis"
+  shell: "{{ app_dir }}/{{ app_name }}/bin/phpize && ./configure --with-php-config={{ app_dir }}/{{ app_name }}/bin/php-config"
+  args:
+    chdir: "{{ dest_source_dir }}/{{ extend01_name }}"
+- name: "add extend"
+  lineinfile:
+    path: "{{ app_dir }}/{{ app_name }}//etc/php.ini"
+    state: present
+    line: "{{ extend01_cnf_name }}"
+- name: "send swoole package to dest"
+  unarchive:
+    src: "{{ extend02_tar_name }}"
+    dest: "{{ dest_source_dir }}"
+- name: "add extend swoole"
+  shell: "{{ app_dir }}/{{ app_name }}/bin/phpize && ./configure --with-php-config={{ app_dir }}/{{ app_name }}/bin/php-config"
+  args:
+    chdir: "{{ dest_source_dir }}/{{ extend02_name }}"
+- name: "add extend"
+  lineinfile:
+    path: "{{ app_dir }}/{{ app_name }}//etc/php.ini"
+    state: present
+    line: "{{ extend02_cnf_name }}"

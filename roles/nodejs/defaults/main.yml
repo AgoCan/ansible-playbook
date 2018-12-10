@@ -1,0 +1,5 @@
+app_dir: /ev-app/
+app_name: node-v8.11.4
+dest_source_dir: /data/src/
+tarball_name: node-v8.11.4.tar.gz
+

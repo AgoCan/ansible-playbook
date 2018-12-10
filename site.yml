@@ -1,0 +1,10 @@
+- hosts: 192.168.204.24
+  roles: 
+    #- redis
+    #- php
+    #- base
+    #- nginx
+    #- mysql
+    #- python3
+    #- ice
+    - nodejs

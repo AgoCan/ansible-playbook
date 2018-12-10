@@ -1,0 +1,6 @@
+user: redis
+group: redis
+app_name: redis-5.0.2
+app_dir: /ev-app/
+tarball_name: redis-5.0.2.tar.gz
+dest_source_dir: /data/src/

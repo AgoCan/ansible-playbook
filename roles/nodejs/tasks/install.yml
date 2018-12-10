@@ -1,0 +1,13 @@
+- name: "send nodejs package to dest"
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: "{{ dest_source_dir }}"
+- name: "contigure nodejs"
+  shell: "./configure " 
+  args:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+- name:
+  make:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+    target: install
+

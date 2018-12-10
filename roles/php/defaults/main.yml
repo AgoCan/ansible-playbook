@@ -1,0 +1,14 @@
+app_name: php-7.2.12
+tarball_name: php-7.2.12.tar.gz
+dest_source_dir: /data/src/
+base_dir: /ev-app/
+install_dir: /ev-app/php-7.2.12/
+app_dir: /ev-app/
+user: www
+group: www
+extend01_tar_name: phpredis-4.1.1.tar.gz
+extend01_name: phpredis-4.1.1
+extend01_cnf_name: redis.so
+extend02_tar_name: swoole-4.2.9.tar.gz
+extend02_name: swoole-src-4.2.9
+extend02_cnf_name: swoole.so

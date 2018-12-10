@@ -1,0 +1,7 @@
+user: www
+group: www
+app_name: nginx-1.14.1
+app_dir: /ev-app/
+tarball_name: nginx-1.14.1.tar.gz
+install_dir: /ev-app/nginx-1.14.1/
+dest_source_dir: /data/src/

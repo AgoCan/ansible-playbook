@@ -1,0 +1,43 @@
+- name: rely package
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - openssl
+      - openssl-devel
+      - lmdb-devel
+      - zlib-devel 
+      - bzip2
+      - bzip2-devel
+      - bzip2
+      - expat-devel
+      - java
+      - java-devel
+      - python-devel
+      - npm
+      - ruby
+      - ruby-devel
+      - php
+      - php-devel
+- name: "rely tarball "
+  unarchive:
+    src: "{{ rely_tar_name }}"
+    dest: "{{ dest_source_dir }}"
+
+- name:
+  make:
+    chdir: "{{ dest_source_dir }}/{{ rely_name }}"
+    target: install
+
+- name:
+  shell: "cp /opt/mcpp-2.7.2/lib64/libmcpp.a /usr/lib/"
+
+- name: "ice tar "
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: "{{ dest_source_dir }}"
+- name:
+  make:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+    target: install
+

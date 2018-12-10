@@ -1,0 +1,59 @@
+- name: install rely
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - ncurses-devel
+      - libaio-devel
+      - cmake
+
+- name: "create group www"
+  group:
+    name: "{{ group }}"
+    gid: 779
+
+- name: "create user mysql"
+  user:
+    name: "{{ user }}"
+    comment: mysql user
+    uid: 779
+    group: "{{ group }}"
+    shell: /sbin/nologin
+
+- name: "send boots package to dest"
+  unarchive:
+    src: "{{ rely_tar_name }}"
+    dest: "{{ dest_source_dir }}"
+
+- name: "install boost"
+  shell: "./bootstrap.sh ; ./b2 install ; echo 1 "
+  args:
+    chdir: "{{ dest_source_dir }}/{{ rely_name }}"
+
+- name: "send php package to dest"
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: "{{ dest_source_dir }}"
+
+- name: install mysql
+  shell: "cmake . -DCMAKE_INSTALL_PREFIX={{ app_dir }}/{{ app_name }} -DMYSQL_DATADIR={{ data_dir }} -DMYSQL_UNIX_ADDR={{ app_dir }}/{{ app_name }}tmp/mysql.sock -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DWITH_EXTRA_CHARSETS=all -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_FEDERATED_STORAGE_ENGINE=1 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 -DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 -DWITH_ZLIB=bundled -DWITH_SSL=bundled -DENABLED_LOCAL_INFILE=1 -DWITH_EMBEDDED_SERVER=1 -DENABLE_DOWNLOADS=1 -DWITH_DEBUG=0" 
+  args:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+
+- name:
+  make:
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+    target: install
+
+- name:
+  file:
+    src: "{{ app_dir }}/{{ app_name }}"
+    dest: "{{ app_dir }}/mysql"
+    state: link
+
+- name: "mysql cnf"
+  shell: "echo pass"
+
+- name: "start scripts"
+  shell: "echo qi dong jiao ben"
+

@@ -1,0 +1,10 @@
+app_name: mysql-5.7.24
+tarball_name: mysql-5.7.24.tar.gz
+dest_source_dir: /data/src/
+app_dir: /ev-app/
+user: mysql
+group: mysql
+rely_tar_name: boost_1_59_0.tar.gz
+rely_name: boost_1_59_0
+data_dir: /data/sda1/mysql
+log_dir: /log/mysql

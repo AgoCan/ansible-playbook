@@ -1,0 +1,33 @@
+- name: "create group reids"
+  group:
+    name: "{{ group }}"
+    gid: 799
+- name: "create redis"
+  user:
+    name: "{{ user }}"
+    comment: reids user
+    uid: 799
+    group: "{{ group }}"
+    shell: /sbin/nologin
+- name: "send package to dest"
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: "{{ dest_source_dir }}"
+- name: "make redis"
+  make: 
+    chdir: "{{ dest_source_dir }}/{{ app_name }}"
+    target: install
+    params:
+      PREFIX: "{{ app_dir }}/{{ app_name }}"
+- name:
+  file:
+    src: "{{ app_dir }}/{{ app_name }}"
+    dest: "{{ app_dir }}/redis"
+    state: link
+- name: "copy conf"
+  copy: 
+    src: redis.conf
+    dest: "{{ app_dir }}/{{ app_name }}/etc/"
+
+- name: "service start scripts"
+  shell: "echo 1"
